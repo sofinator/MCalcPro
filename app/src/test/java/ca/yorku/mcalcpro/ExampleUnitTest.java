@@ -28,11 +28,16 @@ public class ExampleUnitTest
 
         String s = "Monthly  Payment = " + mp.computePayment("%,.2f");
         s+="\n\n";
-        s+="By making this payments monthly for ";
+        s+="By making this payments monthly for " + mp.getAmortization() + " years, the mortgage will be paid in full. But if you terminate themortgage on its nth anniversary, the balance still owing depends on n as shown below:";
         s+= "\n\n";
-        s+= String.format("%8d",0) + mp.outstandingAfter(0,"%,16.0f");
+        s+= String.format("%8s","n") + String.format("%16s","Balance");
         s+= "\n\n";
-        s+= String.format("%8d",1) + mp.outstandingAfter(1,"%,16.0f");
+        int amortization = Integer.parseInt(mp.getAmortization());
+
+        for (int n=0; n <= amortization; n++) {
+            s+= String.format("%8d",n) + mp.outstandingAfter(n,"%,16.0f");
+            s+= "\n\n";
+        }
 
         System.out.println(s);
     }
