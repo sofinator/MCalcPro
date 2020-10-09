@@ -34,7 +34,10 @@ public class MCalcPro_Activity extends AppCompatActivity
         String s = "Monthly  Payment = " + mp.computePayment("%,.2f");
         s+="\n\n";
         s+="By making this payments monthly for ";
-        s+= String.format("%8d",0) + mp.outstandingAfter(2,"%,16.0f");
+        s+= "\n\n";
+        s+= String.format("%8d",0) + mp.outstandingAfter(0,"%,16.0f");
+        s+= "\n\n";
+        s+= String.format("%8d",1) + mp.outstandingAfter(1,"%,16.0f");
 
         ((TextView) findViewById(R.id.output)).setText(s);
     }
