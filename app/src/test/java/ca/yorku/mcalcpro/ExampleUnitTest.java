@@ -2,6 +2,8 @@ package ca.yorku.mcalcpro;
 
 import org.junit.Test;
 
+import ca.roumani.i2c.MPro;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,4 +18,11 @@ public class ExampleUnitTest
     {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void mProTest() {
+        MPro mp = new MPro();
+        mp.setPrinciple("400000");
+    }
 }
+
