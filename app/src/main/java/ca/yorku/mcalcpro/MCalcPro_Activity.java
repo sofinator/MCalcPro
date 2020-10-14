@@ -4,11 +4,14 @@ package ca.yorku.mcalcpro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +27,9 @@ public class MCalcPro_Activity extends AppCompatActivity implements TextToSpeech
 {
     private TextToSpeech tts;
 
+    private SensorManager mSensorManager;
+    private Sensor accel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -31,6 +37,11 @@ public class MCalcPro_Activity extends AppCompatActivity implements TextToSpeech
         setContentView(R.layout.mcalcpro_layout);
 
         this.tts = new TextToSpeech(this, this);
+
+        // Get sensor manager
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        // Get the default sensor of specified type
+        accel = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     public void buttonClicked(View v) {
@@ -71,13 +82,12 @@ public class MCalcPro_Activity extends AppCompatActivity implements TextToSpeech
 
     }
 
-
     public void onInit(int status)
     {
         this.tts.setLanguage(Locale.US);
     }
 
-
+    @Override
     public void onSensorChanged(SensorEvent event)
     {
         double ax = event.values[0];
@@ -94,6 +104,23 @@ public class MCalcPro_Activity extends AppCompatActivity implements TextToSpeech
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (accel!=null) {
+            mSensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (accel!=null) {
+            mSensorManager.unregisterListener(this);
+        }
+    }
+
+    @Override
     public void onAccuracyChanged(Sensor arg0, int arg1)
     {
 
